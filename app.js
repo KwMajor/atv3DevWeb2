@@ -112,6 +112,46 @@ res.send({ mensagem: 'Projeto excluído com sucesso' });
 
 });
 
+app.post('/about_index', (req, res) => {
+  const { texto, link1, link2 } = req.body;
+  const sql = 'INSERT INTO about_index (texto, link1, link2) VALUES (?, ?, ?)';
+  db.query(sql, [texto, link1, link2], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.send({ id: result.insertId, texto, link1, link2 });
+  });
+});
+
+app.get('/about_index', (req, res) => {
+    db.query('select * from about_index', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+
+app.get('/about_index/:id', (req, res) => {
+    db.query('select * from about_index where id = ?', [req.params.id], (err, result) => {
+        if (err) return res.status(500).send(err);
+        if (result.length === 0) return res.status(404).send({ mensagem: 'Conteúdo não encontrado'});
+        res.send(result[0]);
+    });
+});
+
+app.put('/about_index/:id', (req, res) => {
+    const { texto, link1, link2 } = req.body;
+    const sql = 'update about_index set texto = ?, link1 = ?, link2 = ? where id = ?';
+    db.query(sql, [texto, link1, link2, req.params.id], (err) => {
+        if (err) return res.status(500).send(err);
+        res.send({ mensagem: 'Conteúdo atualizado com sucesso' });
+    });
+});
+
+app.delete('/about_index/:id', (req, res) => {
+    db.query('delete from about_index where id = ?', [req.params.id], (err) => {
+        if (err) return res.status(500).send(err);
+        res.send({ mensagem: 'Conteúdo excluído com sucesso'});
+    });
+});
+
 app.post('/formacao', (req, res) => {
     const {instituicao, curso, anoDeConclusao} = req.body;
     const sql = 'insert into formacao (instituicao, curso, anoDeConclusao) values (?, ?, ?)';
@@ -151,6 +191,8 @@ app.delete('/formacao/:id', (req, res) => {
         res.send({ mensagem: 'Formação excluída com sucesso' });
     });
 });
+
+
 
 // Iniciar servidor
 
