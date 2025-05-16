@@ -1,6 +1,13 @@
 create database crud;
 
-use crud; 
+use crud;
+
+create table about_index (
+id int auto_increment primary key,
+texto text,
+link1 varchar(255),
+link2 varchar(255)
+);
 
 CREATE TABLE projetos (
 id INT AUTO_INCREMENT PRIMARY KEY,
