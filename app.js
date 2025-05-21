@@ -16,7 +16,7 @@ host: 'localhost',
 
 user: 'root',
 
-password: 'MatheusRamos1!',
+password: 'root',
 
 database: 'crud'
 
